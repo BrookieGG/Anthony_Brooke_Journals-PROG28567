@@ -9,11 +9,11 @@ public class RowGeneration : MonoBehaviour
     public Button generateButton;
     public TMP_InputField squareNumberInput;
     public float size = 1f;
-    public float duration = 10f;
+    public float duration = 10f; //How long the lines stay visible
     // Start is called before the first frame update
     void Start()
     {
-        generateButton.onClick.AddListener(GenerateSquare);
+        generateButton.onClick.AddListener(GenerateSquare); //on click event
     }
 
     // Update is called once per frame
@@ -26,17 +26,18 @@ public class RowGeneration : MonoBehaviour
     {
         int squares;
         if (string.IsNullOrEmpty(squareNumberInput.text) || !int.TryParse(squareNumberInput.text, out squares) || squares <= 0)
+            //makes sure the input field is not empty or invalid (greater than 0)
         {
-            Debug.Log("invalid");
+            Debug.Log("invalid"); //debug checker
             return;
         }
-        for (int i = 0; i < squares; i++)
+        for (int i = 0; i < squares; i++) //loops through the number of squares put in the input field
         {
-            Vector3 start = new Vector3(i * (size + 0.1f), 0, 0);
-            DrawSquare(start, size, Color.white);
+            Vector3 start = new Vector3(i * (size + 0.1f), 0, 0); //calculate the position for each square and each new square is shifted to the right by 0.1
+            DrawSquare(start, size, Color.white); //draw the square at that calculated location
         }
     }
-    void DrawSquare(Vector3 center, float size, Color color)
+    void DrawSquare(Vector3 center, float size, Color color) //drawing square from last task
     {
         float half = size / 2f;
 
