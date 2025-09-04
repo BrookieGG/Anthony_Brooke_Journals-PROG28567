@@ -7,6 +7,7 @@ public class SqaureSpawner : MonoBehaviour
 
     private float s_size = 1f;
     private Vector3 mousePos;
+    private Color sqaureColor = new Color(1f, 1f, 1f, 0.2f);
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,7 @@ public class SqaureSpawner : MonoBehaviour
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseWorldPos.z = 0;
 
-            draw_square(mouseWorldPos, s_size, Color.white);
+            draw_square(mouseWorldPos, s_size, sqaureColor);
             
         }
 
