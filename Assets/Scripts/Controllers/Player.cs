@@ -28,6 +28,10 @@ public class Player : MonoBehaviour
         {
             SpawnBombOnRandomCorner(bombCorner);
         }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            WarpPlayer(enemyTransform, -8f);
+        }
     }
     private void SpawnBombAtOffset(Vector3 inOffset) //Spawn Bomb at Offset
     {
@@ -62,4 +66,18 @@ public class Player : MonoBehaviour
         Instantiate(bombPrefab, spawnPosition, Quaternion.identity);
 
     }
-}
+    private void WarpPlayer(Transform target, float ratio)
+    {
+        if (ratio > 1)
+        {
+            ratio = 1;
+            //Debug.Log("ratio = ratio");
+        }
+        if (ratio < 0)
+        {
+            ratio = 0;
+        }
+        Vector3 interpolatedPosition = Vector3.Lerp(transform.position, target.position, ratio);
+        transform.position = interpolatedPosition;
+    }
+    }
