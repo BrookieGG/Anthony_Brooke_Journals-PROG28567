@@ -10,7 +10,10 @@ public class Player : MonoBehaviour
     public float bombTrailSpacing = 10;
     public int numberOfTrailBombs = 5;
     public float bombCorner = 3;
-    
+
+    public float warpDist = 0.5f;
+    public float radarDist = 10f;
+
     // Update is called once per frame
     void Update()
     {
@@ -30,11 +33,11 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
-            WarpPlayer(enemyTransform, -8f);
+            WarpPlayer(enemyTransform, warpDist);
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            DetectAsteroids(10f, asteroidTransforms);
+            DetectAsteroids(radarDist, asteroidTransforms);
         }
     }
     private void SpawnBombAtOffset(Vector3 inOffset) //Spawn Bomb at Offset
