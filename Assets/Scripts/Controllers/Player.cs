@@ -100,3 +100,11 @@ public class Player : MonoBehaviour
         }
     }
 }
+
+//private void ColouredAsteroids(List<Transform> asteroidTransforms, Color aColor)
+//when a asteroid is detected by the radar using the same logic as the DetectAsteriods function it will colour those detected asteroids which ever colour the player has chosen
+//this will help the player know which asteroids they have already detected
+
+//private void CheckBombCount(int bombCount)
+//i will adapt every bomb creating function to update a public bomb count variable that will be displayed using a TMP_Text UI in the game screen
+//this will help the player know how many bombs they have created incase there is a limit and stops them from spawning more when they run out of bombs
