@@ -32,6 +32,10 @@ public class Player : MonoBehaviour
         {
             WarpPlayer(enemyTransform, -8f);
         }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            DetectAsteroids(10f, asteroidTransforms);
+        }
     }
     private void SpawnBombAtOffset(Vector3 inOffset) //Spawn Bomb at Offset
     {
@@ -80,4 +84,19 @@ public class Player : MonoBehaviour
         Vector3 interpolatedPosition = Vector3.Lerp(transform.position, target.position, ratio);
         transform.position = interpolatedPosition;
     }
+
+    private void DetectAsteroids(float inMaxRange, List<Transform> inAsteroids)
+    {
+        foreach(Transform asteroid in inAsteroids)
+        {
+            float dist = Vector3.Distance(asteroid.position, transform.position);
+            if(dist <= inMaxRange)
+            {
+                //Debug.Log("in range");
+                Color bluecolor = new Color(0f, 0f, 1f, 0.5f);
+                Vector3 end = (asteroid.position - transform.position).normalized * 2.5f + transform.position;
+                Debug.DrawLine(transform.position, end, bluecolor, 2f, false);
+            }
+        }
     }
+}
