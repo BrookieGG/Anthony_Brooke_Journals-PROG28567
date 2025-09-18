@@ -17,7 +17,8 @@ public class Player : MonoBehaviour
     [Space(15)]
     public float speed = 0.05f;
     public float maxSpeed = 1f;
-    public float accelerationTime = 5;
+    public float accelerationTime = 5f;
+    public float decelerationTime = 1f;
 
     private Vector3 velocity = Vector3.zero;
 
@@ -115,6 +116,7 @@ public class Player : MonoBehaviour
     private void PlayerMovement()
     {
         float acceleration = maxSpeed / accelerationTime;
+        float deceleration = maxSpeed / decelerationTime;
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -140,8 +142,24 @@ public class Player : MonoBehaviour
             //transform.position += Vector3.down * speed;
         }
 
-        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
-        transform.position += velocity * Time.deltaTime;
+        //if not moving / arrow keys aren't being pressed
+        if (!Input.GetKey(KeyCode.LeftArrow) &&
+           !Input.GetKey(KeyCode.RightArrow) &&
+           !Input.GetKey(KeyCode.UpArrow) &&
+           !Input.GetKey(KeyCode.DownArrow))
+        {
+            float reduceVelocity = velocity.magnitude - deceleration * Time.deltaTime;
+
+            if (reduceVelocity < 0)
+            {
+                reduceVelocity = 0;
+            }
+
+            velocity = velocity.normalized * reduceVelocity;
+        }
+
+            velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
+            transform.position += velocity * Time.deltaTime;
     }
 }
 
