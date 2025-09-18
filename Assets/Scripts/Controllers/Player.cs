@@ -14,9 +14,18 @@ public class Player : MonoBehaviour
     public float warpDist = 0.5f;
     public float radarDist = 10f;
 
+    [Space(15)]
+    public float speed = 0.05f;
+    public float maxSpeed = 1f;
+    public float accelerationTime = 5;
+
+    private Vector3 velocity = Vector3.zero;
+
     // Update is called once per frame
     void Update()
     {
+        PlayerMovement();
+
         if (Input.GetKeyDown(KeyCode.B))
         {
             SpawnBombAtOffset(new Vector3(0, 1));
@@ -101,6 +110,38 @@ public class Player : MonoBehaviour
                 Debug.DrawLine(transform.position, end, bluecolor, 2f, false);
             }
         }
+    }
+
+    private void PlayerMovement()
+    {
+        float acceleration = maxSpeed / accelerationTime;
+
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            velocity += acceleration * Time.deltaTime * Vector3.left;
+            //transform.position += Vector3.left * speed;
+        }
+
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            velocity += acceleration * Time.deltaTime * Vector3.right;
+            //transform.position += Vector3.right * speed;
+        }
+
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            velocity += acceleration * Time.deltaTime * Vector3.up;
+            //transform.position += Vector3.up * speed;
+        }
+
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            velocity += acceleration * Time.deltaTime * Vector3.down;
+            //transform.position += Vector3.down * speed;
+        }
+
+        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
+        transform.position += velocity * Time.deltaTime;
     }
 }
 
