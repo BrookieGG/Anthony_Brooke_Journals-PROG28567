@@ -179,9 +179,9 @@ public class Player : MonoBehaviour
             enemyTransform.position += direction * enemySpeed * Time.deltaTime;
         }
 
-        Debug.Log("Enemy: " + enemyTransform.position);
-        Debug.Log("Enemy Speed: " + enemySpeed);
-        Debug.Log("Enemy Dist: " + enemyMaxDist);
+        //Debug.Log("Enemy: " + enemyTransform.position);
+        //Debug.Log("Enemy Speed: " + enemySpeed);
+        //Debug.Log("Enemy Dist: " + enemyMaxDist);
     }
 }
 
