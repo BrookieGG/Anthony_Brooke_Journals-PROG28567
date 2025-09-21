@@ -15,10 +15,14 @@ public class Player : MonoBehaviour
     public float radarDist = 10f;
 
     [Space(15)]
-    public float speed = 0.05f;
-    public float maxSpeed = 1f;
-    public float accelerationTime = 5f;
+    public float speed = 2f;
+    public float maxSpeed = 7f;
+    public float accelerationTime = 1f;
     public float decelerationTime = 1f;
+
+    [Space(15)]
+    public float enemySpeed = 5f;
+    public float enemyMaxDist = 0.9f;
 
     private Vector3 velocity = Vector3.zero;
 
@@ -26,6 +30,8 @@ public class Player : MonoBehaviour
     void Update()
     {
         PlayerMovement();
+
+        EnemyMovement();
 
         if (Input.GetKeyDown(KeyCode.B))
         {
@@ -160,6 +166,22 @@ public class Player : MonoBehaviour
 
             velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
             transform.position += velocity * Time.deltaTime;
+    }
+
+    private void EnemyMovement()
+    {
+        Vector3 direction = (transform.position - enemyTransform.position).normalized;
+
+        float distance = Vector3.Distance(transform.position, enemyTransform.position); //distance between enemy and player
+
+        if (distance > enemyMaxDist) //move enemy unless its at the set distance
+        {
+            enemyTransform.position += direction * enemySpeed * Time.deltaTime;
+        }
+
+        Debug.Log("Enemy: " + enemyTransform.position);
+        Debug.Log("Enemy Speed: " + enemySpeed);
+        Debug.Log("Enemy Dist: " + enemyMaxDist);
     }
 }
 
