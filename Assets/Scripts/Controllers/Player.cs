@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
 {
     public Transform enemyTransform;
     public GameObject bombPrefab;
+    public GameObject powerUp;
     public List<Transform> asteroidTransforms;
 
     public float bombTrailSpacing = 10;
@@ -55,6 +56,16 @@ public class Player : MonoBehaviour
         {
             DetectAsteroids(radarDist, asteroidTransforms);
         }
+
+        if( Input.GetKeyDown(KeyCode.R))
+        {
+            EnemyRadar(2, 8);
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SpawnPowerUps(2, 4);
+        }
+
     }
     private void SpawnBombAtOffset(Vector3 inOffset) //Spawn Bomb at Offset
     {
@@ -183,6 +194,59 @@ public class Player : MonoBehaviour
         //Debug.Log("Enemy Speed: " + enemySpeed);
         //Debug.Log("Enemy Dist: " + enemyMaxDist);
     }
+
+    private void EnemyRadar(float radius, int circlePoints)
+    {
+        float angle = 360 / circlePoints;
+        if (circlePoints < 3)
+        {
+            return;
+        }
+        Color radarCol = Color.green;
+        
+        float distance = Vector3.Distance(transform.position, enemyTransform.position);
+        if (distance <= radius)
+        {
+            radarCol = Color.red;
+        }
+
+        Vector3 pointOne = new Vector3(0, 0, 0);
+        Vector3 pointTwo = new Vector3(0, 0, 0);
+
+        for (int i = 0; i < circlePoints; i++)
+        {
+            float ang = angle * i;
+            float rad = Mathf.Deg2Rad * ang;
+            Vector3 point = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0) * radius + transform.position;
+            if (i == 0)
+            {
+                pointOne = point;
+            }
+            else
+            {
+                Debug.DrawLine(pointTwo, point, radarCol, 10);
+            }
+            pointTwo = point;
+        }
+
+        Debug.DrawLine(pointTwo, pointOne, radarCol, 10);
+    }
+    private void SpawnPowerUps(float radius, int numberOfPowerups)
+    {
+        float angle = 360f / numberOfPowerups;
+        Vector3 pointOne = new Vector3(0, 0, 0);
+     
+
+        for (int i = 0; i < numberOfPowerups; i++)
+        {
+            float ang = angle * i;
+            float rad = Mathf.Deg2Rad * ang;
+            pointOne = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0) * radius + transform.position;
+            Instantiate(powerUp, pointOne, Quaternion.identity);
+        }
+
+    }
+
 }
 
 //private void ColouredAsteroids(List<Transform> asteroidTransforms, Color aColor)
