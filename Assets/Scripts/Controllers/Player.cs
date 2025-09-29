@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
     public Transform enemyTransform;
     public GameObject bombPrefab;
     public GameObject powerUp;
+    public GameObject missile;
     public List<Transform> asteroidTransforms;
 
     public float bombTrailSpacing = 10;
@@ -24,6 +25,7 @@ public class Player : MonoBehaviour
     [Space(15)]
     public float enemySpeed = 5f;
     public float enemyMaxDist = 0.9f;
+    public int sec = 0;
 
     private Vector3 velocity = Vector3.zero;
 
@@ -33,6 +35,8 @@ public class Player : MonoBehaviour
         PlayerMovement();
 
         EnemyMovement();
+
+        MissileLock(25, 300);
 
         if (Input.GetKeyDown(KeyCode.B))
         {
@@ -66,6 +70,7 @@ public class Player : MonoBehaviour
             SpawnPowerUps(2, 4);
         }
 
+        
     }
     private void SpawnBombAtOffset(Vector3 inOffset) //Spawn Bomb at Offset
     {
@@ -244,6 +249,62 @@ public class Player : MonoBehaviour
             pointOne = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0) * radius + transform.position;
             Instantiate(powerUp, pointOne, Quaternion.identity);
         }
+
+    }
+
+    //Final Assignment Proposal 1
+    private void MissileLock(float speed, int rate)
+    {
+
+        sec = sec + 1;
+        if (sec % rate != 0)
+        {
+            return;
+        }
+        float maxY = 10;
+        float minY = -10;
+        float maxX = 19;
+        float minX = -19;
+        float Xchoice = Random.Range(0, 3);
+        float Ychoice;
+        float XPos = 0;
+        float YPos = 0;
+
+        if (Xchoice == 0)
+        {
+            Ychoice = Random.Range(1, 3);
+            XPos = Random.Range(minX, maxX);
+        }
+        else
+        {
+            Ychoice = Random.Range(0, 3);
+        }
+
+        if (Xchoice == 1)
+        {
+            XPos = maxX;
+        }
+        if (Xchoice == 2)
+        {
+            XPos = minX;
+        }
+
+        if (Ychoice == 1)
+        {
+            YPos = maxY;
+        }
+        else if (Ychoice == 2)
+        {
+            YPos = minY;
+        }
+        else
+        {
+            YPos = Random.Range(minY, maxY);
+        }
+
+        Vector3 randomPos = new Vector3(XPos, YPos,0);
+
+        Instantiate(missile, randomPos, Quaternion.identity);
 
     }
 
