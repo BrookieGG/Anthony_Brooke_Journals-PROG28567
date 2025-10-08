@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -29,14 +30,23 @@ public class Player : MonoBehaviour
 
     private Vector3 velocity = Vector3.zero;
 
+    public float spawnInterval = 8f;
+    public float timer = 0f;
+
     // Update is called once per frame
     void Update()
     {
+        timer += Time.deltaTime;
+
+        if (timer >= spawnInterval) //calls method if the timer is the spawnInterval
+        {
+            MissileLock(7, 300);
+            timer = 0f;
+        }
+
         PlayerMovement();
 
         EnemyMovement();
-
-        MissileLock(25, 300);
 
         if (Input.GetKeyDown(KeyCode.B))
         {
@@ -255,12 +265,7 @@ public class Player : MonoBehaviour
     //Final Assignment Proposal 1
     private void MissileLock(float speed, int rate)
     {
-
-        sec = sec + 1;
-        if (sec % rate != 0)
-        {
-            return;
-        }
+      
         float maxY = 10;
         float minY = -10;
         float maxX = 19;
@@ -303,8 +308,12 @@ public class Player : MonoBehaviour
         }
 
         Vector3 randomPos = new Vector3(XPos, YPos,0);
+        Vector3 playerLastKnownPos = transform.position;
 
-        Instantiate(missile, randomPos, Quaternion.identity);
+        GameObject newMissile = Instantiate(missile, randomPos, Quaternion.identity);
+        newMissile.GetComponent<Missile>().TargetPosition(playerLastKnownPos, speed); //calls method in Missile script
+       
+          
 
     }
 
