@@ -20,6 +20,12 @@ public class Missile : MonoBehaviour
     {
         transform.position += target * moveSpeed * Time.deltaTime; //move towards that direction in every frame
 
+        if (target != Vector3.zero)
+        {
+            float angle = Mathf.Atan2(target.y, target.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
+        }
+
         if (Mathf.Abs(transform.position.x) > destroyX || Mathf.Abs(transform.position.y) > destroyY) //destroys missile when off screen
         {
             Destroy(gameObject);
