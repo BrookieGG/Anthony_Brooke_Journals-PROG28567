@@ -79,8 +79,8 @@ public class PlayerController : MonoBehaviour
     {
         if (Mathf.Abs(velocity.x) > walkingDeadzone)
         {
+            Debug.Log("Walking is true");
             return true;
-            Debug.Log("true");
         }
         
         else
@@ -92,13 +92,13 @@ public class PlayerController : MonoBehaviour
     {
         if (BoxCollider.IsTouchingLayers(ground))
         {
+            //Debug.Log("true");
             return true;
-            Debug.Log("true");
         }
         else
         {
+            //Debug.Log("false");
             return false;
-            Debug.Log("false");
         }
     }
 
