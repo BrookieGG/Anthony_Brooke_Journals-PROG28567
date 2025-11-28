@@ -15,6 +15,7 @@ public float terminalSpeed = -2f;
 public float coyoteTime = 0.1f;
 private float coyoteTimer = 0f;
 public LayerMask ground;
+public float bounceForce = 8f;
 
 public float walkingDeadzone = 0.05f;
 
@@ -83,7 +84,7 @@ private void MovementUpdate(Vector2 playerInput)
     else
     {
         coyoteTimer -= Time.deltaTime;
-        Debug.Log(coyoteTimer);
+        //Debug.Log(coyoteTimer);
     }
 
 
@@ -149,6 +150,16 @@ public FacingDirection GetFacingDirection()
     return currentDirection;
 }
 
-        
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Pad"))
+        {
+            Debug.Log("triggered bounce pad");
+
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, bounceForce);
+
+            coyoteTimer = 0f;
+        }
+    }
 }
 
