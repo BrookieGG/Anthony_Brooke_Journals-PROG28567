@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed = 5f;
     public float accelerationTime = 1f;
     public float decelerationTime = 1f;
+    public float apexHeight = 2f;
     public float apexHeightMax = 2f;
     public float apexHeightMin = 0.5f;
     public float apexTime = 0.4f;
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour
     private bool isDashing = false;
     private float dashDuration = 0.2f;
     private float dashDurationTimer = 0f;
+    private bool isHolding = false;
+    private float jumpTime = 10f;
 
     public float walkingDeadzone = 0.05f;
 
@@ -43,8 +46,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         //BoxCollider = GetComponent<BoxCollider2D>();
 
-        gravity = (-2 * apexHeightMax) / (apexTime * apexTime);
-        jumpVelocity = (2 * apexHeightMax) / apexTime;
+       
     }
 
     void Update()
@@ -65,6 +67,7 @@ public class PlayerController : MonoBehaviour
 
     private void MovementUpdate(Vector2 playerInput)
     {
+        
         if (isDashing)
         {
             return;
@@ -72,7 +75,52 @@ public class PlayerController : MonoBehaviour
         
         float acceleration = maxSpeed / accelerationTime;
         float deceleration = maxSpeed / decelerationTime;
-        rb.linearVelocity += new Vector2(0, gravity * Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.Space) && coyoteTimer > 0 && rb.linearVelocity.y <= 0)
+        {
+            isHolding = true;
+            apexHeight = apexHeightMax;
+
+            gravity = (-2 * apexHeight) / (apexTime * apexTime);
+            jumpVelocity = (2 * apexHeight) / apexTime;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
+            coyoteTimer = 0;
+        }
+        //if (Input.GetKey(KeyCode.Space) && isHolding)
+        //{
+
+        //apexHeight += Time.deltaTime * 5f;
+
+        //Debug.Log("max height");
+        //}
+
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * (apexHeightMin / apexHeightMax));
+
+            isHolding = false;
+
+
+        }
+
+        if (rb.linearVelocity.y > 0)
+        {
+            if (isHolding)
+            {
+                rb.linearVelocity += new Vector2(0, gravity * 0.6f * Time.deltaTime);
+
+            }
+            else
+            {
+                rb.linearVelocity += new Vector2(0, gravity * 2f * Time.deltaTime);
+            }
+        }
+        else
+        {
+            rb.linearVelocity += new Vector2(0, gravity * Time.deltaTime);
+        }
 
         if (playerInput.x != 0)
         {
@@ -100,23 +148,19 @@ public class PlayerController : MonoBehaviour
             //Debug.Log(coyoteTimer);
         }
 
+       
 
-        if (Input.GetAxisRaw("Jump") > 0 && coyoteTimer > 0 && rb.linearVelocity.y <= 0)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpVelocity);
-
-        }
 
         if (rb.linearVelocity.y < terminalSpeed)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, terminalSpeed);
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, terminalSpeed);
+            }
+
+            velocity = Vector2.ClampMagnitude(velocity, maxSpeed);
+
+            rb.linearVelocity = new Vector2(velocity.x, rb.linearVelocity.y);
         }
-
-        velocity = Vector2.ClampMagnitude(velocity, maxSpeed);
-
-        rb.linearVelocity = new Vector2(velocity.x, rb.linearVelocity.y);
-
-    }
+    
 
     public bool IsWalking()
     {
