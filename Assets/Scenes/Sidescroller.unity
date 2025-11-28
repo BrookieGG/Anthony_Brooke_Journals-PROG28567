@@ -1713,6 +1713,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   bounceForce: 15
+  dash: 18
+  dashCooldown: 1
   walkingDeadzone: 0.05
   BoxCollider: {fileID: 1518021474}
 --- !u!4 &1433354315
